@@ -123,7 +123,7 @@ ui <- fluidPage(
                  sidebarLayout(
                    # Sidebar with a slider and selection inputs
                    sidebarPanel(
-                     selectInput("selection", "Choose a word:",
+                     selectInput("selection", "Choose word(s):",
                                  choices = books),
                      actionButton("update", "Change"),
                      hr(),
