@@ -2,7 +2,9 @@
 title: "SetWD Removed"
 author: "Jackie"
 date: "December 2, 2017"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 
@@ -150,6 +152,7 @@ df <- twListToDF(strip_retweets(tweets.raw, strip_manual = TRUE, strip_mt = TRUE
 df.a <- subset(df, select = c(text, created, url, latitude, longitude, retweets, hashtag));
 #nrow(df.a); head(df.a);
 #setwd("C:/Users/Jacqueline/Downloads/emojis-master/emojis-master/2017.0206 emoji data science tutorial");
+setwd("~/finalprojectrepo-master/finalprojectrepo-master");
 write.csv(df.a, paste0('tweets.cleaned_', format(min(df.a$created), '%m%d'), '-', format(max(df.a$created), '%m%d'), '_', ht, '_', Sys.Date(), '_', format(Sys.time(), '%H-%M-%S'), '_n', nrow(df.a), '.csv'), row.names = FALSE);
 tweets <- df; tweets$z <- 1; tweets$created <- as.POSIXlt(tweets$created); #nrow(tweets); min(tweets$created); max(tweets$created); median(tweets$created);
 
@@ -164,6 +167,7 @@ library(stringr)
 ####### READ IN SAVED TWITTER DATA
 # change in fnames 'tutorial_tweets_raw' to
 #setwd("C:/Users/Jacqueline/Downloads/emojis-master/emojis-master/2017.0206 emoji data science tutorial")
+setwd("~/finalprojectrepo-master/finalprojectrepo-master")
 fnames <- c(
   'chipotle'
 );
@@ -216,6 +220,7 @@ num.tweets <- nrow(tweets); df.t <- rowSums(tweets.emojis.matrix[, c(2:843)] > -
 df.plot <- subset(emojis.count.p, rank <= 10); xlab <- 'Rank'; ylab <- 'Overall Frequency (per 5,000 Tweets)';
 #opts_knit$set(root.dir = "C:/Users/Jacqueline/Downloads/emojis-master/ios_9_3_emoji_files")
 #setwd("C:/Users/Jacqueline/Downloads/emojis-master/ios_9_3_emoji_files")
+setwd("~/finalprojectrepo-master/finalprojectrepo-master/ios_9_3_emoji_files/ios_9_3_emoji_files")
 df.plot <- arrange(df.plot, name);
 # error in imgs
 imgs <- lapply(paste0(df.plot$name, '.png'), png::readPNG); g <- lapply(imgs, grid::rasterGrob);
