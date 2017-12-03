@@ -86,7 +86,7 @@ usa <- map_data("usa")
 gg1 <- ggplot() + 
   geom_polygon(data = usa, aes(x=long, y = lat, group = group), fill = "#c9c9ff", color = "#ffb732") + 
   coord_fixed(1.3)
-gg1 + geom_point(data = locations.csv, aes(x = longitude, y = latitude), color = "#35a79c", size =2)
+gg1 + geom_point(data = locations.csv, aes(x = longitude, y = latitude), color = "#35a79c", size =2) + labs(x="Longitude", y="Latitude") + ggtitle("Tweet Locations")
 
 
 
@@ -122,6 +122,10 @@ Unfortunately, it can be quite difficult to gather a plethora of locations from 
 Below is a link to a Shiny app I have created that is an interactive word cloud that can alternate between representing words in tweets about Chipotle and, more specifically, tweets about Chipotle's queso. You can use the drop down to select the tweets you wish to have the word cloud express and press the "Change" button to watch the cloud change according to your choice. Then, you can use the sliders to modify the cloud based on the minimum frequency of the words and the maximum number of words. The bigger and bolder a word is within the word cloud, the more frequently it is used in the tweets. After looking at the word cloud at the link below, one can gather some information about how people tend ot tweet about Chipotle. 
 
 https://jahorn.shinyapps.io/chipotle-wordcloud/
+
+First looking at the Chipotle tweets word cloud when it is set to minimum frequency 10 and maximum number of words 85, significant words that stand out, besides the obvious "Chipotle", are "ceo", "founder", "steve", "ells"", "support", "changed", "struggling", "fundraiser", and "turnaround". These words show that many people are tweeting about the issues that the Ceo if Chipotle, Steve Ells, is facing. He has been trying to save Chipotle from the many mishaps of e coli and poorly received queso release. However, there are some words like "fundraiser" and "support" that are likely to be from more positive tweets about Chipotle, since Chipotle often helps organizations hold fundraisers at their restaurants. Also, "turnaround" could be indicative of people tweeting about how Chipotle is making a positive turnaround from its near-disastrous illness outbreaks. 
+
+Next, let us look at the Chipotle queso tweets word cloud. For a good visual, set the minimum frequency to 20 and the maximum number of word to 75. Significant words that stand out with this word cloud are "good", "sh*t", "garbage", "super", "bad", and "norovirus". "Norovirus" refers to the outbreak of the norovirus around the Boston College area from Chipotle food. Unfortunately, there seem to be many negative words in the cloud referring to their new Chipotle. The spike in the word "norovirus" could be because people fear that with a new food item being introduced to the Chipotle restaurants comes along a new concern that this item is safely stored and prepared to prevent foodborn illnesses. 
 
 
 
