@@ -1,0 +1,298 @@
+---
+title: "Presentation"
+author: "Jacqueline Horn"
+date: "due December 15, 2017"
+output:
+  beamer_presentation: default
+  ioslides_presentation: default
+---
+
+```{r setup, include=FALSE, echo = FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+#Just to inform who is looking at the presentation code, I inserted the .png files of a few charts from my final project to save run time of this presentation, but all of the code for all of the visualations that are seen here can be found within my finalproject .Rmd file that produces the document. 
+
+```
+
+```{r tweets, echo=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+
+library(devtools)
+library(twitteR)
+
+api_key <- 	"KX9Sk6lCenrrn2yHCe2XKIVKi"
+api_secret <- "TNbtVYjfzEfhWKKeKCG4MWbnzLapTyrCP5JhKx5pelVWvbwBO4"
+access_token <- "927639225461366785-ct1z0xLv20fctGskDaVUwdBncX3udNw"
+access_token_secret <- "l4C0SHwagaACa21SfejxSW79s1fg22Wm3vUamaJrh7Lkl"
+
+
+
+setup_twitter_oauth(api_key, api_secret, access_token, access_token_secret)
+
+# [1] "Using direct authentication"
+# Use a local file ('.httr-oauth'), to cache OAuth access credentials between R sessions?
+# 
+# 1: Yes
+# 2: No
+# 
+# Selection: 1
+# Adding .httr-oauth to .gitignore
+
+
+# getting tweets about chipotle from the beginng of the year and on
+tweets <- searchTwitter("chipotle", n=7000, lang="en", since="2017-01-01")
+# Transform tweets list into a data frame
+tweets.df <- twListToDF(tweets)
+
+```
+
+# Project Description
+
+For my final project, I decided to perform Twitter research on Chipotle, the restaurant chain. My reason for choosing Chipotle is that people tend to enjoy tweeting about food. Additionally, the official Chipotle Twitter account, @ChipotleTweets, is a relatively active account with nearly 900,000 followers and 675,000 tweets. I was also curious to see if I could find any relevant information regarding the recent launch of Chipotle's own queso that was released on September 12th of this year. I had seen online after the release that people were generally not happy with the queso and I wanted to see if that could be concluded from the tweets about the queso, as well. 
+
+
+
+
+# Locations
+
+First, I thought it might be interesting from a marketing standpoint to see where people who tweet about Chipotle are located. There is a feature on Twitter that allows its users to share their location for each specific tweet. I decided to use this information to plot these locations. It should be noted that most people to not have this location feature made visible, so there is not an enormous amount of available location data. Regardless, I thought it might be interesting to see if any particular trends could still be visualized.
+
+
+
+# Where People Tweet about Chipotle in the USA
+
+```{r map, echo=FALSE, message=FALSE, warning=FALSE}
+library(ggplot2)
+library(ggmap)
+library(maps)
+library(mapdata)
+
+yodf.read <- read.csv(file="yodf.csv", header=TRUE)
+loc.csv <- -1*is.na(yodf.read$longitude) + 1
+loc1.csv  <- which(loc.csv==1)
+locations.csv <- data.frame(latitude = as.numeric(yodf.read$latitude[loc1.csv]), longitude = as.numeric(yodf.read$longitude[loc1.csv]))
+locations.csv <- subset(locations.csv, (latitude>=25 & latitude<=50) & (longitude>=-125 & longitude<=-65))
+usa <- map_data("usa")
+gg1 <- ggplot() + 
+  geom_polygon(data = usa, aes(x=long, y = lat, group = group), fill = "#c9c9ff", color = "#ffb732") + 
+  coord_fixed(1.3)
+gg1 + geom_point(data = locations.csv, aes(x = longitude, y = latitude), color = "#35a79c", size =2) + labs(x="Longitude", y="Latitude") + ggtitle("Tweet Locations")
+
+```
+
+
+# Word Cloud
+
+Below is a link to a Shiny app I have created that is an interactive word cloud that can alternate between representing words in tweets about Chipotle and, more specifically, tweets about Chipotle's queso. You can use the drop down to select the tweets you wish to have the word cloud express and press the "Change" button to watch the cloud change according to your choice. Then, you can use the sliders to modify the cloud based on the minimum frequency of the words and the maximum number of words. The bigger and bolder a word is within the word cloud, the more frequently it is used in the tweets. After looking at the word cloud at the link below, one can gather some information about how people tend to tweet about Chipotle. 
+
+https://jahorn.shinyapps.io/chipotle-wordcloud/
+
+# Word Cloud
+
+First looking at the Chipotle tweets word cloud when it is set to minimum frequency 10 and maximum number of words 85, significant words that stand out, besides the obvious "Chipotle", are "ceo", "founder", "steve", "ells"", "support", "changed", "struggling", "fundraiser", and "turnaround". These words show that many people are tweeting about the issues that the CEO of Chipotle, Steve Ells, is facing. He has been trying to save Chipotle from the many mishaps of e coli and poorly received queso release. However, there are some words like "fundraiser" and "support" that are likely to be from more positive tweets about Chipotle, since Chipotle often helps organizations hold fundraisers at their restaurants. Also, "turnaround" could be indicative of people tweeting about how Chipotle is making a positive turnaround from its near-disastrous illness outbreaks. 
+
+#
+
+Next, let us look at the Chipotle queso tweets word cloud. I selected tweets for this word cloud that were after September 12th, 2017 to ensure that what people were saying was indeed after the queso was released and not just the hype beforehand. For a good visual, set the minimum frequency to 20 and the maximum number of word to 75. Significant words that stand out with this word cloud are "good", "sh*t", "garbage", "super", "bad", and "norovirus". "Norovirus" refers to the outbreak of the norovirus around the Boston College area from Chipotle food. Unfortunately, there seem to be many negative words in the cloud referring to their new queso. The spike in the word "norovirus" could be because people fear that with a new food item being introduced to the Chipotle restaurants comes along a new concern that this item may not be safely stored or not adequately prepared to prevent foodborn illnesses. 
+
+
+
+# Emoji Analysis
+
+Next, we will look at the emojis that frequently appear in tweets about Chipotle. 
+```{r emoji analysis, echo=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+
+
+
+#set up Twitter Authentication
+library(twitteR)
+library(reshape)
+
+###### GRAB TWEETS, PROCESS, AND WRITE TO DISK ######
+
+# 2017.0202,
+set.seed(20170202); ht <- 'chipotle';
+tweets.raw <- searchTwitter(ht, n = 5000, lang = 'en');
+df <- twListToDF(strip_retweets(tweets.raw, strip_manual = TRUE, strip_mt = TRUE)); df$hashtag <- ht; df$created <- as.POSIXlt(df$created); df$text <- iconv(df$text, 'latin1', 'ASCII', 'byte'); df$url <- paste0('https://twitter.com/', df$screenName, '/status/', df$id); df <- rename(df, c(retweetCount = 'retweets'));
+df.a <- subset(df, select = c(text, created, url, latitude, longitude, retweets, hashtag));
+#nrow(df.a); head(df.a);
+#setwd("C:/Users/Jacqueline/Downloads/emojis-master/emojis-master/2017.0206 emoji data science tutorial");
+setwd("~/finalprojectrepo-master/finalprojectrepo-master");
+write.csv(df.a, paste0('tweets.cleaned_', format(min(df.a$created), '%m%d'), '-', format(max(df.a$created), '%m%d'), '_', ht, '_', Sys.Date(), '_', format(Sys.time(), '%H-%M-%S'), '_n', nrow(df.a), '.csv'), row.names = FALSE);
+tweets <- df; tweets$z <- 1; tweets$created <- as.POSIXlt(tweets$created); #nrow(tweets); min(tweets$created); max(tweets$created); median(tweets$created);
+
+
+
+
+library(plyr)
+library(ggplot2)
+library(splitstackshape)
+library(stringr)
+
+####### READ IN SAVED TWITTER DATA
+# change in fnames 'tutorial_tweets_raw' to
+#setwd("C:/Users/Jacqueline/Downloads/emojis-master/emojis-master/2017.0206 emoji data science tutorial")
+setwd("~/finalprojectrepo-master/finalprojectrepo-master")
+fnames <- c(
+  'chipotle'
+);
+fnames <- paste0(fnames, '.csv'); df <- do.call(rbind.fill, lapply(fnames, read.csv));
+df$username <- substr(substr(df$url, 21, nchar(as.character(df$url))), 1, nchar(substr(df$url, 21, nchar(as.character(df$url))))-26);
+tweets.full <- df; tweets.full$X <- NULL; tweets.full$z <- 1;
+#### sanity checking
+tweets.full$created <- as.POSIXlt(tweets.full$created); #min(tweets.full$created); max(tweets.full$created); median(tweets.full$created); nrow(tweets.full); length(unique(tweets.full$username))
+## dedupe dataset by url
+tweets.dupes <- tweets.full[duplicated(tweets.full$url), ]; #nrow(tweets.full); nrow(tweets.dupes); # test <- subset(tweets.full, url %in% tweets.dupes$url); test <- test[with(test, order(url)), ];
+tweets <- tweets.full[!duplicated(tweets.full$url), ]; tweets <- arrange(tweets, url); row.names(tweets) <- NULL; tweets$tweetid <- as.numeric(row.names(tweets)); #nrow(tweets);
+tweets.final <- tweets;
+## dedupe dataset by username
+tweets.dupes <- tweets.full[duplicated(tweets.full$username), ]; #nrow(tweets.full); nrow(tweets.dupes); # test <- subset(tweets, url %in% tweets.dupes$url); test <- test[with(test, order(url)), ];
+tweets <- tweets.full[!duplicated(tweets.full$username), ]; tweets <- arrange(tweets, url); row.names(tweets) <- NULL; tweets$tweetid <- as.numeric(row.names(tweets)); #nrow(tweets);
+
+#### READ IN EMOJI DICTIONARIES
+emdict.la <- read.csv('emoticon_conversion_noGraphic.csv', header = F); #Lauren Ancona; https://github.com/laurenancona/twimoji/tree/master/twitterEmojiProject
+emdict.la <- emdict.la[-1, ]; row.names(emdict.la) <- NULL; names(emdict.la) <- c('unicode', 'bytes', 'name'); emdict.la$emojiid <- row.names(emdict.la);
+emdict.jpb <- read.csv('emDict.csv', header = F) #Jessica Peterka-Bonetta; http://opiateforthemass.es/articles/emoticons-in-R/
+emdict.jpb <- emdict.jpb[-1, ]; row.names(emdict.jpb) <- NULL; names(emdict.jpb) <- c('name', 'bytes', 'rencoding'); emdict.jpb$name <- tolower(emdict.jpb$name);
+emdict.jpb$bytes <- NULL;
+## merge dictionaries
+emojis <- merge(emdict.la, emdict.jpb, by = 'name');  emojis$emojiid <- as.numeric(emojis$emojiid); emojis <- arrange(emojis, emojiid);
+
+###### FIND TOP EMOJIS FOR A GIVEN SUBSET OF THE DATA
+tweets <- tweets.final;
+# tweets <- subset(tweets.final, hashtag %in% c('#womensmarch'));
+## create full tweets by emojis matrix
+df.s <- matrix(NA, nrow = nrow(tweets), ncol = ncol(emojis));
+systemtime <- system.time(df.s <- sapply(emojis$rencoding, regexpr, tweets$text, ignore.case = T, useBytes = T));
+rownames(df.s) <- 1:nrow(df.s); colnames(df.s) <- 1:ncol(df.s); df.t <- data.frame(df.s); df.t$tweetid <- tweets$tweetid;
+# merge in hashtag data from original tweets dataset
+df.a <- subset(tweets, select = c(tweetid, hashtag));
+df.u <- merge(df.t, df.a, by = 'tweetid'); df.u$z <- 1; df.u <- arrange(df.u, tweetid);
+tweets.emojis.matrix <- df.u;
+## create emoji count dataset
+df <- subset(tweets.emojis.matrix)[, c(2:843)]; count <- colSums(df > -1);
+emojis.m <- cbind(count, emojis); emojis.m <- arrange(emojis.m, desc(count));
+emojis.count <- subset(emojis.m, count > 1); emojis.count$dens <- round(1000 * (emojis.count$count / nrow(tweets)), 1); emojis.count$dens.sm <- (emojis.count$count + 1) / (nrow(tweets) + 1);
+emojis.count$rank <- as.numeric(row.names(emojis.count));
+emojis.count.p <- subset(emojis.count, select = c(name, dens, count, rank));
+# print summary stats
+#subset(emojis.count.p, rank <= 10);
+num.tweets <- nrow(tweets); df.t <- rowSums(tweets.emojis.matrix[, c(2:843)] > -1); num.tweets.with.emojis <- length(df.t[df.t > 0]); num.emojis <- sum(emojis.count$count);
+#min(tweets$created); max(tweets$created); median(tweets$created);
+#num.tweets; num.tweets.with.emojis; round(100 * (num.tweets.with.emojis / num.tweets), 1); num.emojis; nrow(emojis.count);
+```
+
+```{r chart, echo=FALSE, message=FALSE, warning=FALSE}
+##### MAKE BAR CHART OF TOP EMOJIS IN NEW DATASET
+df.plot <- subset(emojis.count.p, rank <= 10); xlab <- 'Rank'; ylab <- 'Overall Frequency (per 5,000 Tweets)';
+#opts_knit$set(root.dir = "C:/Users/Jacqueline/Downloads/emojis-master/ios_9_3_emoji_files")
+#setwd("C:/Users/Jacqueline/Downloads/emojis-master/ios_9_3_emoji_files")
+setwd("~/finalprojectrepo-master/finalprojectrepo-master/ios_9_3_emoji_files/ios_9_3_emoji_files")
+df.plot <- arrange(df.plot, name);
+# error in imgs
+imgs <- lapply(paste0(df.plot$name, '.png'), png::readPNG); g <- lapply(imgs, grid::rasterGrob);
+k <- 0.20 * (10/nrow(df.plot)) * max(df.plot$dens); df.plot$xsize <- k; df.plot$ysize <- k; #df.plot$xsize <- k * (df.plot$dens / max(df.plot$dens)); df.plot$ysize <- k * (df.plot$dens / max(df.plot$dens));
+df.plot <- arrange(df.plot, name);
+# error in g1 with g because need imgs for g
+##ff7954 peach
+g1 <- ggplot(data = df.plot, aes(x = rank, y = dens)) +
+  geom_bar(stat = 'identity', fill = '#f4a644') +
+  xlab(xlab) + ylab(ylab) +
+  mapply(function(x, y, i) {
+    annotation_custom(g[[i]], xmin = x-0.5*df.plot$xsize[i], xmax = x+0.5*df.plot$xsize[i],
+                      ymin = y-0.5*df.plot$ysize[i], ymax = y+0.5*df.plot$ysize[i])},
+    df.plot$rank, df.plot$dens, seq_len(nrow(df.plot))) +
+  scale_x_continuous(expand = c(0, 0), breaks = seq(1, nrow(df.plot), 1), labels = seq(1, nrow(df.plot), 1)) +
+  scale_y_continuous(expand = c(0, 0), limits = c(0, 1.10 * max(df.plot$dens))) +
+  theme(panel.grid.minor.y = element_blank(),
+        axis.title.x = element_text(size = 10), axis.title.y = element_text(size = 14),
+        axis.text.x  = element_text(size = 8, colour = 'black'), axis.text.y  = element_text(size = 8, colour = 'black')) + ggtitle("Most Common Emojis Tweeted with 'Chipotle'");
+g1;
+
+```
+
+# Emoji Analysis
+
+This chart above looks at the emojis being used in tweets about Chipotle and ranks the top ten starting from the most used starting at the left. Some of the top emojis can be logically interpreted, such as the heart eyes face, heart, praise hands, and smiling faces. However, the top two emojis can be a little confusing out of context. The top emoji tweeted along with "Chipotle" is the laugh crying face, followed by the crying face. These may seem sad or of mocking nature, but below are some example of tweets with these emojis to get a general idea of what the context of the tweet usually is. 
+
+#
+
+![Laugh crying face](Chipotle laugh emoji1.png)
+
+
+![Crying face and laugh crying face](Chipotle laugh and cry emoji.png)
+
+#
+
+![Crying face](Chipotle cry emoji1.png)
+```{r}
+```
+
+These tweets pictured above are good examples of the context of the tweets containing these emojis. One can conclude from the chart and the tweets that most people tweeting about Chipotle and using emojis are tweeting positively about the restaurant chain, often saying they are craving the food.
+
+
+# Sentiments Expressed about Chipotle
+
+We will look at the sentiments of tweets about Chipotle, but in relation to Twitter users' word choices. 
+![Chipotle tweets sentiment](Neg v Pos Words Chipotle.png)
+
+##
+The chart above looks at positive and negative words used in tweets about Chipotle. There are relatively
+high contributions of positive sentiment words to the tweets. "Support" is a very popular positive word being
+tweeted with "Chipotle". Below is a table that includes a sample of 25 tweets that are about Chipotle and
+include the word "support", to show a glimpse of what these types of tweets look like.
+
+
+# Sample "Support" Tweets
+
+```{r tweetgrid, echo=FALSE, message=FALSE, warning=FALSE}
+# the word with highest contribution to the positive sentiment is "support"; so now we will look at what some of those tweets look like
+tweets.df.support <- tweets.df[grep("support", tweets.df$text),]
+library(gridExtra)
+
+clean_tweet.support = gsub("&amp", "", tweets.df.support$text)
+clean_tweet.support = gsub("(RT|via)((?:\\b\\W*@\\w+)+)", "", clean_tweet.support)
+clean_tweet.support = gsub("@\\w+", "", clean_tweet.support)
+clean_tweet.support = gsub("[[:punct:]]", "", clean_tweet.support)
+clean_tweet.support = gsub("[[:digit:]]", "", clean_tweet.support)
+clean_tweet.support = gsub("http\\w+", "", clean_tweet.support)
+clean_tweet.support = gsub("[ \t]{2,}", "", clean_tweet.support)
+clean_tweet.support = gsub("^\\s+|\\s+$", "", clean_tweet.support)
+clean_tweet.support <- str_replace_all(clean_tweet.support," "," ")
+clean_tweet.support <- str_replace(clean_tweet.support,"RT @[a-z,A-Z]*: ","")
+clean_tweet.support <- str_replace_all(clean_tweet.support,"#[a-z,A-Z]*","")
+clean_tweet.support <- str_replace_all(clean_tweet.support,"@[a-z,A-Z]*","")  
+clean_tweet.support <- gsub("@\\w+ *", "", clean_tweet.support)
+clean_tweet.support <- gsub("#\\w+ *", "", clean_tweet.support)
+clean_tweet.support <- gsub("\n", " ", clean_tweet.support)
+clean_tweet.support <- gsub("[^a-zA-Z #]","",clean_tweet.support)    # "a-zA-Z #" are the things we need
+clean_tweet.support <- gsub("https\\w+ *", "", clean_tweet.support)
+clean_tweet.support <- tolower(clean_tweet.support)
+
+tweets.support.ex <- clean_tweet.support[1:25]
+grid.table(tweets.support.ex)
+
+```
+
+# Sample "Support" Tweets
+
+If you take a look above at the group of tweets I pulled about Chipotle, it seems to be that a many of these tweets that include "support", which is a large proportion of positive tweets about Chipotle, are about different fundraisers that are being held at Chipotle and the tweets are mostly inviting people to come and "support" by coming to the participating Chipotle. This is much more reassuring about the reputation of Chipotle, being that the word clouds were slightly more negative. This chart may represent that there is still a lot of positivity surrounding the company, despite its various scandals and obstacles it has encountered in the recent years. Since these tweets are from the beginning of this current year on, we know we are getting tweets that have occured after most of the major negative publicity instances of Chipotle, showing that despite the issues Chipotle has had, many people still take on the opportunity to fundraise with the company and do good, which is beneficial to Chipotle's reputation as well.
+
+
+# Chipotle Queso Tweets Sentiment
+
+![Chipotle queso tweets sentiment](Neg v Pos Words Chipotle Queso.png)
+
+# Chipotle Queso Tweets Sentiment
+
+Looking at the second set of charts regarding sentiment, which looks more specifically at sentiment regarding Chipotle's queso, there are sadly not many positive words being used in tweets regarding the new queso. On the other hand, there are much more negative words being used and at at a higher frequency. For example, "garbage" or "trash" tend to usually be at the top of the negative side, which does not mean good news for Chipotle. The queso was supposed to be a new marketing technique to help get customers back that may have made the decision to frequent the restaurant chain less often perhaps due to the e coli breakouts. 
+
+# Final Thoughts
+
+The bid to get back its diners with queso does not appear to have been received well based on the tweet text analysis that has been performed. However, Chipotle should not lose hope because as shown in the first sentiment chart, there is still a fair amount of positivity surrounding the company. But perhaps Chipotle should focus its efforts on coninuing to enhance its humanitarian image in conjunction with promoting their efforts to ensure safe food preparation, rather than promoting its new queso.
+
+#
+
+![Bon Appetit!](chipotle-quesoh.jpg)
+
+
+
