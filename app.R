@@ -1,4 +1,6 @@
+
 # This is the code to my Shiny word cloud app
+# Jacqueline Horn
 
 library(shiny)
 library(tm)
