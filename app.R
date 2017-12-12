@@ -1,3 +1,4 @@
+# This is the code to my Shiny word cloud app
 
 library(shiny)
 library(tm)
@@ -16,10 +17,13 @@ access_token_secret <- "l4C0SHwagaACa21SfejxSW79s1fg22Wm3vUamaJrh7Lkl"
 
 setup_twitter_oauth(api_key, api_secret, access_token, access_token_secret)
 
-# getting tweets about chipotle from the beginning of the year and on
-#tweets <- searchTwitter("chipotle", n=7000, lang="en", since="2017-01-01")
+# I am getting tweets about chipotle from the beginning of the year and on in "tweets"
+# I then use the commented code below to clean the text of the tweets before I write them into a table to save and use for the word cloud
+
+# tweets <- searchTwitter("chipotle", n=7000, lang="en", since="2017-01-01")
+
 # Transform tweets list into a data frame
-#tweets.df <- twListToDF(tweets)
+# tweets.df <- twListToDF(tweets)
 
 # look at tweets about their queso; are people actually happy??:
 # tweets.chipotle <- searchTwitter("chipotle", n=2000, lang="en", since="2017-09-12")
@@ -70,20 +74,17 @@ setup_twitter_oauth(api_key, api_secret, access_token, access_token_secret)
 
 # setwd("C:/RStudio & Git/Chipotle shiny app")
 
-#write.csv(clean_tweet, "clean_tweet.csv")
-# fix queso csv
-#write.csv(tweets.queso$text, "tweets.queso.csv")
 
-# good one
+# Create a table with the clean tweets about Chipotle
 #write.table(clean_tweet, "clean_tweet.txt")
 #read.table("clean_tweets.txt")
 
-#tweets.queso = tweets.queso$text
-#write.table(tweets.queso, "tweets.queso.txt")
 
-# good one
+# Create a table with the clean tweets about Chipotle's queso
 #write.table(clean_tweet_queso, "clean_tweets_queso.txt")
 #read.table("clean_tweets_queso.txt")
+
+# Now I used these .txt files to create Corpus for each one and in the end create a word cloud, I used some of the code from the Shiny gallery
 
 books <<- list("Chipotle tweets" = "clean_tweet", "Chipotle queso tweets" ="clean_tweets_queso")
 
