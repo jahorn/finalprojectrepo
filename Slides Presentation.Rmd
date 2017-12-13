@@ -224,7 +224,7 @@ g1;
 
 # Emoji Analysis
 
-This chart above looks at the emojis being used in tweets about Chipotle and ranks the top ten starting from the most used starting at the left. Some of the top emojis can be logically interpreted, such as the heart eyes face, heart, praise hands, and smiling faces. However, the top two emojis can be a little confusing out of context. The top emoji tweeted along with "Chipotle" is the laugh crying face, followed by the crying face. These may seem sad or of mocking nature, but below are some example of tweets with these emojis to get a general idea of what the context of the tweet usually is. 
+This chart above looks at the emojis being used in tweets about Chipotle and ranks the top ten starting from the most used starting at the left. Some of the top emojis can be logically interpreted, such as the heart eyes face, heart, praise hands, and smiling faces. However, the top two emojis can be a little confusing out of context. The top emoji tweeted along with "Chipotle" is the laugh crying face, followed by the crying face. These may seem sad or of mocking nature, but below are some examples of tweets with these emojis to get a general idea of what the context of the tweet usually is. 
 
 #
 
