@@ -121,7 +121,7 @@ sort(rowSums(m), decreasing = TRUE)
 
 
 ui <- fluidPage( 
-                titlePanel("Word Cloud"),
+                titlePanel("Chipotle Word Cloud"),
                  
                  sidebarLayout(
                    # Sidebar with a slider and selection inputs
