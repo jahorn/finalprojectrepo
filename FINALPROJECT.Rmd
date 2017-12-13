@@ -326,7 +326,7 @@ bing_word_counts %>%
 
 
 
-The chart above looks at positive and negative words used in tweets about Chipotle. There are relatively high contributions of positive sentiment words to the tweets versus the lower contributions of the negative words. "Support" is a very popular positive word being tweeted with "Chipotle", with "love" also usually being at the top if the list. Below is a table that includes a sample of 25 tweets that are about Chipotle and include the word "support", to show a glimpse of what these types of tweets look like.
+The chart above looks at positive and negative words used in tweets about Chipotle. There are relatively high contributions of positive sentiment words to the tweets versus the lower contributions of the negative words. "Support" is a very popular positive word being tweeted with "Chipotle", with "love" also usually being at the top of the list. Below is a table that includes a sample of 25 tweets that are about Chipotle and include the word "support", to show a glimpse of what these types of tweets look like.
 
 Sample "Support" Tweets:
 ```{r}
