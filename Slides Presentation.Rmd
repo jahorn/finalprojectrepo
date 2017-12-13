@@ -9,7 +9,7 @@ output:
 
 ```{r setup, include=FALSE, echo = FALSE}
 knitr::opts_chunk$set(echo = FALSE)
-# READ ME: you will have to make sure the lines that setwd on lines 122, 137, and 192 are correct to where the files are on your computer in order to access all of the necessary files to run the emoji analysis.
+# READ ME: you will have to make sure the lines that setwd on lines 131, 146, and 201 are correct to where the files are on your computer in order to access all of the necessary files to run the emoji analysis.
 
 #Just to inform who is looking at the presentation code, I inserted the .png files of a few charts from my final project to save run time of this presentation, but all of the code for all of the visualations that are seen here can be found within my finalproject .Rmd file that produces the document and all the charts. I also did so to censor some inappropriate words that are still valuable to analysis.
 
