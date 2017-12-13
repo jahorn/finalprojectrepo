@@ -402,7 +402,7 @@ bing_word_counts.1 %>%
 ```
 
 
-Looking at the second set of charts regarding sentiment, which looks more specifically at sentiment regarding Chipotle's queso, there are sadly not many positive words being used in tweets regarding the new queso. On the other hand, there are much more negative words being used and at at a higher frequency. For example, "garbage" or "trash" tend to usually be at the top of the negative side, which does not mean good news for Chipotle. The queso was supposed to be a new marketing technique to help get customers back that may have made the decision to frequent the restaurant chain less often perhaps due to the E. coli and norovirus breakouts that occurred in 2015 and 2016. 
+Looking at the second set of charts regarding sentiment, which looks more specifically at sentiment regarding Chipotle's queso, there are sadly not many positive words being used in tweets regarding the new queso. On the other hand, there are many more negative words being used and at a higher frequency. For example, "garbage" or "trash" tend to usually be at the top of the negative side, which does not mean good news for Chipotle. The queso was supposed to be a new marketing technique to help get customers back that may have made the decision to frequent the restaurant chain less often perhaps due to the E. coli and norovirus breakouts that occurred in 2015 and 2016. 
 
 ## Final Thoughts
 
