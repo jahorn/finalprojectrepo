@@ -1,7 +1,7 @@
 ---
 title: "Presentation"
 author: "Jacqueline Horn"
-date: "due December 15, 2017"
+date: "December 15, 2017"
 output:
   beamer_presentation: default
   ioslides_presentation: default
@@ -9,8 +9,9 @@ output:
 
 ```{r setup, include=FALSE, echo = FALSE}
 knitr::opts_chunk$set(echo = FALSE)
+# READ ME: you will have to make sure the lines that setwd on lines 122, 137, and 192 are correct to where the files are on your computer in order to access all of the necessary files to run the emoji analysis.
 
-#Just to inform who is looking at the presentation code, I inserted the .png files of a few charts from my final project to save run time of this presentation, but all of the code for all of the visualations that are seen here can be found within my finalproject .Rmd file that produces the document. 
+#Just to inform who is looking at the presentation code, I inserted the .png files of a few charts from my final project to save run time of this presentation, but all of the code for all of the visualations that are seen here can be found within my finalproject .Rmd file that produces the document and all the charts. I also did so to censor some inappropriate words that are still valuable to analysis.
 
 ```
 
@@ -61,6 +62,8 @@ First, I thought it might be interesting from a marketing standpoint to see wher
 # Where People Tweet about Chipotle in the USA
 
 ```{r map, echo=FALSE, message=FALSE, warning=FALSE}
+# This reads a csv with tweets information and pulls the USA locations in terms of longitudes and latitudes to then plot the tweets on a map
+
 library(ggplot2)
 library(ggmap)
 library(maps)
@@ -100,7 +103,7 @@ Next, let us look at the Chipotle queso tweets word cloud. I selected tweets for
 
 Next, we will look at the emojis that frequently appear in tweets about Chipotle. 
 ```{r emoji analysis, echo=FALSE, message=FALSE, warning=FALSE, include=FALSE}
-
+# Make sure to set the working director that is set on line 122, 137, and 192 in my code to the correct working directory on your computer. 
 
 
 #set up Twitter Authentication
